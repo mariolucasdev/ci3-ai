@@ -1,6 +1,6 @@
 # CI3 AI
 
-Pacote de IA para **CodeIgniter 3.1.11+** e **PHP 7.2+**: agentes, tools e MCP (Model Context Protocol) com suporte a **OpenAI**, **Gemini** e **DeepSeek** — sem nenhuma dependência externa (HTTP via cURL nativo).
+Pacote de IA para **CodeIgniter 3.1.11+** e **PHP 7.2+**: agentes, tools e MCP (Model Context Protocol) com suporte a **OpenAI**, **Anthropic (Claude)**, **Gemini** e **DeepSeek** — sem nenhuma dependência externa (HTTP via cURL nativo).
 
 ## Instalação
 
@@ -9,6 +9,7 @@ Pacote de IA para **CodeIgniter 3.1.11+** e **PHP 7.2+**: agentes, tools e MCP (
 
 ```bash
 export OPENAI_API_KEY=sk-...
+export ANTHROPIC_API_KEY=sk-ant-...
 export GEMINI_API_KEY=...
 export DEEPSEEK_API_KEY=...
 ```
@@ -107,8 +108,11 @@ public function mcp()
 | Provedor | Modelo padrão | Variável de ambiente |
 |----------|---------------|----------------------|
 | OpenAI   | `gpt-4o-mini` | `OPENAI_API_KEY` |
+| Anthropic (Claude) | `claude-opus-4-8` | `ANTHROPIC_API_KEY` |
 | DeepSeek | `deepseek-chat` | `DEEPSEEK_API_KEY` |
 | Gemini   | `gemini-2.0-flash` | `GEMINI_API_KEY` |
+
+> Anthropic: a Messages API exige `max_tokens` em toda chamada — o pacote usa 4096 por padrão (configurável em `config/ai.php` ou por chamada via `['max_tokens' => ...]`).
 
 Modelos e URLs são configuráveis em `application/config/ai.php`; o modelo também pode ser trocado por chamada via `['model' => '...']`.
 

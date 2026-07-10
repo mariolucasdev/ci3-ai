@@ -43,5 +43,15 @@ $config['ai'] = [
             'base_url' => 'https://generativelanguage.googleapis.com/v1beta',
             'model' => 'gemini-2.0-flash',
         ],
+
+        'anthropic' => [
+            'class' => 'CiAi\\Providers\\AnthropicProvider',
+            'api_key' => getenv('ANTHROPIC_API_KEY'),
+            'base_url' => 'https://api.anthropic.com/v1',
+            'model' => 'claude-opus-4-8',
+            // Obrigatório na API da Anthropic; sobrescreva por chamada com
+            // a opção 'max_tokens'
+            'max_tokens' => 4096,
+        ],
     ],
 ];
