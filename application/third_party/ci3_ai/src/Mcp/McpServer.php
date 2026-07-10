@@ -52,7 +52,7 @@ class McpServer
 		$body = file_get_contents('php://input');
 		$request = json_decode($body, true);
 
-		$response = $this->handle(is_array($request) ? $request : array());
+		$response = $this->handle(is_array($request) ? $request : []);
 
 		if ($response === null) {
 			// Notificação: sem corpo de resposta
@@ -74,7 +74,7 @@ class McpServer
 	public function handle(array $request)
 	{
 		$method = isset($request['method']) ? $request['method'] : null;
-		$params = isset($request['params']) ? $request['params'] : array();
+		$params = isset($request['params']) ? $request['params'] : [];
 		$id = isset($request['id']) ? $request['id'] : null;
 
 		// Notificações não recebem resposta
@@ -84,22 +84,22 @@ class McpServer
 
 		switch ($method) {
 			case 'initialize':
-				return $this->success($id, array(
+				return $this->success($id, [
 					'protocolVersion' => self::PROTOCOL_VERSION,
-					'capabilities' => array(
+					'capabilities' => [
 						'tools' => new \stdClass(),
-					),
-					'serverInfo' => array(
+					],
+					'serverInfo' => [
 						'name' => $this->serverName,
 						'version' => $this->serverVersion,
-					),
-				));
+					],
+				]);
 
 			case 'ping':
 				return $this->success($id, new \stdClass());
 
 			case 'tools/list':
-				return $this->success($id, array('tools' => $this->toolDefinitions()));
+				return $this->success($id, ['tools' => $this->toolDefinitions()]);
 
 			case 'tools/call':
 				return $this->handleToolCall($id, $params);
@@ -114,14 +114,14 @@ class McpServer
 	 */
 	protected function toolDefinitions()
 	{
-		$definitions = array();
+		$definitions = [];
 
 		foreach ($this->tools->all() as $tool) {
-			$definitions[] = array(
+			$definitions[] = [
 				'name' => $tool->getName(),
 				'description' => $tool->getDescription(),
 				'inputSchema' => $tool->getParameters(),
-			);
+			];
 		}
 
 		return $definitions;
@@ -137,7 +137,7 @@ class McpServer
 		$name = isset($params['name']) ? $params['name'] : '';
 		$arguments = isset($params['arguments']) && is_array($params['arguments'])
 			? $params['arguments']
-			: array();
+			: [];
 
 		if (!$this->tools->has($name)) {
 			return $this->error($id, -32602, 'Tool desconhecida: ' . $name);
@@ -147,15 +147,15 @@ class McpServer
 			$result = $this->tools->execute($name, $arguments);
 			$text = is_string($result) ? $result : json_encode($result);
 
-			return $this->success($id, array(
-				'content' => array(array('type' => 'text', 'text' => $text)),
+			return $this->success($id, [
+				'content' => [['type' => 'text', 'text' => $text]],
 				'isError' => false,
-			));
+			]);
 		} catch (\Exception $e) {
-			return $this->success($id, array(
-				'content' => array(array('type' => 'text', 'text' => $e->getMessage())),
+			return $this->success($id, [
+				'content' => [['type' => 'text', 'text' => $e->getMessage()]],
 				'isError' => true,
-			));
+			]);
 		}
 	}
 
@@ -166,11 +166,11 @@ class McpServer
 	 */
 	protected function success($id, $result)
 	{
-		return array(
+		return [
 			'jsonrpc' => '2.0',
 			'id' => $id,
 			'result' => $result,
-		);
+		];
 	}
 
 	/**
@@ -181,10 +181,10 @@ class McpServer
 	 */
 	protected function error($id, $code, $message)
 	{
-		return array(
+		return [
 			'jsonrpc' => '2.0',
 			'id' => $id,
-			'error' => array('code' => $code, 'message' => $message),
-		);
+			'error' => ['code' => $code, 'message' => $message],
+		];
 	}
 }

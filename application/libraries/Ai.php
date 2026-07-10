@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 require_once APPPATH . 'third_party/ci3_ai/autoload.php';
 
@@ -19,7 +19,7 @@ use CiAi\Mcp\McpServer;
  *
  * Exemplos:
  *   $texto = $this->ai->ask('Resuma este texto: ...');
- *   $resposta = $this->ai->provider('gemini')->chat(array(Message::user('Olá')));
+ *   $resposta = $this->ai->provider('gemini')->chat([Message::user('Olá')]);
  *   $agente = $this->ai->agent()->setSystemPrompt('...')->addTool($tool);
  *
  * @package CiAi
@@ -32,14 +32,14 @@ class Ai
 	protected $config;
 
 	/** @var ProviderInterface[] Instâncias por nome */
-	protected $providers = array();
+	protected $providers = [];
 
 	/**
 	 * @param array $params Sobrescreve chaves da configuração
 	 */
-	public function __construct($params = array())
+	public function __construct($params = [])
 	{
-		$CI =& get_instance();
+		$CI = & get_instance();
 		$CI->config->load('ai', true);
 
 		$this->config = array_merge($CI->config->item('ai', 'ai'), $params);
@@ -85,9 +85,9 @@ class Ai
 	 * @param string|null $provider
 	 * @return string
 	 */
-	public function ask($prompt, array $options = array(), $provider = null)
+	public function ask($prompt, array $options = [], $provider = null)
 	{
-		$response = $this->provider($provider)->chat(array(Message::user($prompt)), $options);
+		$response = $this->provider($provider)->chat([Message::user($prompt)], $options);
 
 		return (string) $response->content;
 	}
@@ -100,7 +100,7 @@ class Ai
 	 * @param string|null $provider
 	 * @return \CiAi\Chat\ChatResponse
 	 */
-	public function chat(array $messages, array $options = array(), $provider = null)
+	public function chat(array $messages, array $options = [], $provider = null)
 	{
 		return $this->provider($provider)->chat($messages, $options);
 	}
@@ -133,7 +133,7 @@ class Ai
 	 * @param array $headers
 	 * @return McpClient
 	 */
-	public function mcpClient($url, array $headers = array())
+	public function mcpClient($url, array $headers = [])
 	{
 		$timeout = isset($this->config['timeout']) ? $this->config['timeout'] : 60;
 

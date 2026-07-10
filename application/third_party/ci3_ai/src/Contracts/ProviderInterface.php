@@ -28,5 +28,5 @@ interface ProviderInterface
 	 * @return ChatResponse
 	 * @throws \CiAi\Exceptions\ProviderException
 	 */
-	public function chat(array $messages, array $options = array());
+	public function chat(array $messages, array $options = []);
 }

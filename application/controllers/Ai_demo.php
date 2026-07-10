@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 use CiAi\Tools\DatetimeTool;
 
@@ -34,14 +34,14 @@ class Ai_demo extends CI_Controller
 		$provider = $this->input->get_post('provider'); // null = padrão
 
 		if (empty($question)) {
-			return $this->json(array('error' => 'Informe o parâmetro q'), 400);
+			return $this->json(['error' => 'Informe o parâmetro q'], 400);
 		}
 
 		try {
-			$answer = $this->ai->ask($question, array(), $provider);
-			$this->json(array('answer' => $answer));
+			$answer = $this->ai->ask($question, [], $provider);
+			$this->json(['answer' => $answer]);
 		} catch (Exception $e) {
-			$this->json(array('error' => $e->getMessage()), 500);
+			$this->json(['error' => $e->getMessage()], 500);
 		}
 	}
 
@@ -54,7 +54,7 @@ class Ai_demo extends CI_Controller
 		$provider = $this->input->get_post('provider');
 
 		if (empty($question)) {
-			return $this->json(array('error' => 'Informe o parâmetro q'), 400);
+			return $this->json(['error' => 'Informe o parâmetro q'], 400);
 		}
 
 		try {
@@ -64,12 +64,12 @@ class Ai_demo extends CI_Controller
 
 			$response = $agent->run($question);
 
-			$this->json(array(
+			$this->json([
 				'answer' => $response->content,
 				'usage' => $response->usage,
-			));
+			]);
 		} catch (Exception $e) {
-			$this->json(array('error' => $e->getMessage()), 500);
+			$this->json(['error' => $e->getMessage()], 500);
 		}
 	}
 

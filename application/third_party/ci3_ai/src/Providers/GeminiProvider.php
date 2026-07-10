@@ -22,13 +22,13 @@ class GeminiProvider extends AbstractProvider
 		return 'gemini';
 	}
 
-	public function chat(array $messages, array $options = array())
+	public function chat(array $messages, array $options = [])
 	{
-		$payload = array(
-			'contents' => array(),
-		);
+		$payload = [
+			'contents' => [],
+		];
 
-		$generationConfig = array();
+		$generationConfig = [];
 		if (isset($options['temperature'])) {
 			$generationConfig['temperature'] = $options['temperature'];
 		}
@@ -41,9 +41,9 @@ class GeminiProvider extends AbstractProvider
 
 		foreach ($messages as $message) {
 			if ($message->role === Message::ROLE_SYSTEM) {
-				$payload['systemInstruction'] = array(
-					'parts' => array(array('text' => (string) $message->content)),
-				);
+				$payload['systemInstruction'] = [
+					'parts' => [['text' => (string) $message->content]],
+				];
 				continue;
 			}
 
@@ -51,15 +51,15 @@ class GeminiProvider extends AbstractProvider
 		}
 
 		if (!empty($options['tools'])) {
-			$declarations = array();
+			$declarations = [];
 			foreach ($options['tools'] as $tool) {
-				$declarations[] = array(
+				$declarations[] = [
 					'name' => $tool['name'],
 					'description' => $tool['description'],
 					'parameters' => $tool['parameters'],
-				);
+				];
 			}
-			$payload['tools'] = array(array('functionDeclarations' => $declarations));
+			$payload['tools'] = [['functionDeclarations' => $declarations]];
 		}
 
 		$model = $this->resolveModel($options);
@@ -68,7 +68,7 @@ class GeminiProvider extends AbstractProvider
 		$response = $this->http->postJson(
 			$url,
 			$payload,
-			array('x-goog-api-key: ' . $this->config['api_key'])
+			['x-goog-api-key: ' . $this->config['api_key']]
 		);
 
 		return $this->parseResponse($response);
@@ -82,39 +82,39 @@ class GeminiProvider extends AbstractProvider
 	{
 		if ($message->role === Message::ROLE_TOOL) {
 			$response = json_decode((string) $message->content, true);
-			return array(
+			return [
 				'role' => 'user',
-				'parts' => array(array(
-					'functionResponse' => array(
+				'parts' => [[
+					'functionResponse' => [
 						'name' => $message->name,
-						'response' => array(
+						'response' => [
 							'result' => $response !== null ? $response : (string) $message->content,
-						),
-					),
-				)),
-			);
+						],
+					],
+				]],
+			];
 		}
 
 		if ($message->role === Message::ROLE_ASSISTANT) {
-			$parts = array();
+			$parts = [];
 			if ($message->content !== null && $message->content !== '') {
-				$parts[] = array('text' => (string) $message->content);
+				$parts[] = ['text' => (string) $message->content];
 			}
 			foreach ($message->toolCalls as $call) {
-				$parts[] = array(
-					'functionCall' => array(
+				$parts[] = [
+					'functionCall' => [
 						'name' => $call->name,
 						'args' => count($call->arguments) > 0 ? $call->arguments : new \stdClass(),
-					),
-				);
+					],
+				];
 			}
-			return array('role' => 'model', 'parts' => $parts);
+			return ['role' => 'model', 'parts' => $parts];
 		}
 
-		return array(
+		return [
 			'role' => 'user',
-			'parts' => array(array('text' => (string) $message->content)),
-		);
+			'parts' => [['text' => (string) $message->content]],
+		];
 	}
 
 	/**
@@ -126,19 +126,19 @@ class GeminiProvider extends AbstractProvider
 		$result = new ChatResponse();
 		$result->raw = $response;
 
-		$candidate = isset($response['candidates'][0]) ? $response['candidates'][0] : array();
-		$parts = isset($candidate['content']['parts']) ? $candidate['content']['parts'] : array();
+		$candidate = isset($response['candidates'][0]) ? $response['candidates'][0] : [];
+		$parts = isset($candidate['content']['parts']) ? $candidate['content']['parts'] : [];
 
-		$texts = array();
+		$texts = [];
 		foreach ($parts as $part) {
 			if (isset($part['text'])) {
 				$texts[] = $part['text'];
 			}
 			if (isset($part['functionCall'])) {
-				$args = isset($part['functionCall']['args']) ? $part['functionCall']['args'] : array();
+				$args = isset($part['functionCall']['args']) ? $part['functionCall']['args'] : [];
 				$result->toolCalls[] = new ToolCall(
 					$part['functionCall']['name'],
-					is_array($args) ? $args : array()
+					is_array($args) ? $args : []
 				);
 			}
 		}
@@ -148,11 +148,11 @@ class GeminiProvider extends AbstractProvider
 
 		if (isset($response['usageMetadata'])) {
 			$usage = $response['usageMetadata'];
-			$result->usage = array(
+			$result->usage = [
 				'prompt_tokens' => isset($usage['promptTokenCount']) ? $usage['promptTokenCount'] : 0,
 				'completion_tokens' => isset($usage['candidatesTokenCount']) ? $usage['candidatesTokenCount'] : 0,
 				'total_tokens' => isset($usage['totalTokenCount']) ? $usage['totalTokenCount'] : 0,
-			);
+			];
 		}
 
 		return $result;

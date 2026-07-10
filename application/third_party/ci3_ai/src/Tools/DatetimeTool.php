@@ -18,15 +18,15 @@ class DatetimeTool extends AbstractTool
 
 	protected $description = 'Retorna a data e hora atuais do servidor, em um timezone opcional.';
 
-	protected $parameters = array(
+	protected $parameters = [
 		'type' => 'object',
-		'properties' => array(
-			'timezone' => array(
+		'properties' => [
+			'timezone' => [
 				'type' => 'string',
 				'description' => 'Timezone IANA, ex.: America/Sao_Paulo. Padrão: timezone do servidor.',
-			),
-		),
-	);
+			],
+		],
+	];
 
 	public function execute(array $arguments)
 	{
@@ -35,12 +35,12 @@ class DatetimeTool extends AbstractTool
 		try {
 			$date = new \DateTime('now', new \DateTimeZone($timezone));
 		} catch (\Exception $e) {
-			return array('error' => 'Timezone inválido: ' . $timezone);
+			return ['error' => 'Timezone inválido: ' . $timezone];
 		}
 
-		return array(
+		return [
 			'datetime' => $date->format('Y-m-d H:i:s'),
 			'timezone' => $timezone,
-		);
+		];
 	}
 }

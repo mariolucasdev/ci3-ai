@@ -1,5 +1,5 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | @license MIT
 */
 
-$config['ai'] = array(
+$config['ai'] = [
 
 	// Provedor usado quando nenhum é especificado
 	'default_provider' => 'openai',
@@ -21,27 +21,27 @@ $config['ai'] = array(
 	// Timeout (segundos) das requisições HTTP aos provedores
 	'timeout' => 60,
 
-	'providers' => array(
+	'providers' => [
 
-		'openai' => array(
-			'class'    => 'CiAi\\Providers\\OpenAiProvider',
-			'api_key'  => getenv('OPENAI_API_KEY'),
+		'openai' => [
+			'class' => 'CiAi\\Providers\\OpenAiProvider',
+			'api_key' => getenv('OPENAI_API_KEY'),
 			'base_url' => 'https://api.openai.com/v1',
-			'model'    => 'gpt-4o-mini',
-		),
+			'model' => 'gpt-4o-mini',
+		],
 
-		'deepseek' => array(
-			'class'    => 'CiAi\\Providers\\DeepSeekProvider',
-			'api_key'  => getenv('DEEPSEEK_API_KEY'),
+		'deepseek' => [
+			'class' => 'CiAi\\Providers\\DeepSeekProvider',
+			'api_key' => getenv('DEEPSEEK_API_KEY'),
 			'base_url' => 'https://api.deepseek.com',
-			'model'    => 'deepseek-chat',
-		),
+			'model' => 'deepseek-chat',
+		],
 
-		'gemini' => array(
-			'class'    => 'CiAi\\Providers\\GeminiProvider',
-			'api_key'  => getenv('GEMINI_API_KEY'),
+		'gemini' => [
+			'class' => 'CiAi\\Providers\\GeminiProvider',
+			'api_key' => getenv('GEMINI_API_KEY'),
 			'base_url' => 'https://generativelanguage.googleapis.com/v1beta',
-			'model'    => 'gemini-2.0-flash',
-		),
-	),
-);
+			'model' => 'gemini-2.0-flash',
+		],
+	],
+];

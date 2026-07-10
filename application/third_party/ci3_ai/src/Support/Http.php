@@ -35,20 +35,20 @@ class Http
 	 * @return array
 	 * @throws ProviderException
 	 */
-	public function postJson($url, array $payload, array $headers = array())
+	public function postJson($url, array $payload, array $headers = [])
 	{
 		$headers[] = 'Content-Type: application/json';
 		$headers[] = 'Accept: application/json';
 
 		$ch = curl_init($url);
-		curl_setopt_array($ch, array(
+		curl_setopt_array($ch, [
 			CURLOPT_POST => true,
 			CURLOPT_POSTFIELDS => json_encode($payload),
 			CURLOPT_HTTPHEADER => $headers,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_TIMEOUT => $this->timeout,
 			CURLOPT_CONNECTTIMEOUT => 10,
-		));
+		]);
 
 		$body = curl_exec($ch);
 		$errno = curl_errno($ch);

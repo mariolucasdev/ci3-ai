@@ -17,7 +17,7 @@ use CiAi\Exceptions\AiException;
 class ToolRegistry
 {
 	/** @var ToolInterface[] Indexadas por nome */
-	protected $tools = array();
+	protected $tools = [];
 
 	/**
 	 * @param ToolInterface $tool
@@ -57,18 +57,18 @@ class ToolRegistry
 	/**
 	 * Schemas neutros consumidos pelos provedores.
 	 *
-	 * @return array Lista de array('name' => ..., 'description' => ..., 'parameters' => ...)
+	 * @return array Lista de ['name' => ..., 'description' => ..., 'parameters' => ...]
 	 */
 	public function schemas()
 	{
-		$schemas = array();
+		$schemas = [];
 
 		foreach ($this->tools as $tool) {
-			$schemas[] = array(
+			$schemas[] = [
 				'name' => $tool->getName(),
 				'description' => $tool->getDescription(),
 				'parameters' => $tool->getParameters(),
-			);
+			];
 		}
 
 		return $schemas;

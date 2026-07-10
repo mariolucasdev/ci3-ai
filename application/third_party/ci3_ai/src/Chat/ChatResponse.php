@@ -17,16 +17,16 @@ class ChatResponse
 	public $content;
 
 	/** @var ToolCall[] */
-	public $toolCalls = array();
+	public $toolCalls = [];
 
 	/** @var string|null stop, tool_calls, length... */
 	public $finishReason;
 
 	/** @var array Uso de tokens: prompt_tokens, completion_tokens, total_tokens */
-	public $usage = array();
+	public $usage = [];
 
 	/** @var array Resposta bruta do provedor (para depuração) */
-	public $raw = array();
+	public $raw = [];
 
 	/**
 	 * @return bool

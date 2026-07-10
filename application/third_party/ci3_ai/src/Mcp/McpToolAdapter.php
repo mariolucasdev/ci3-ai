@@ -48,7 +48,7 @@ class McpToolAdapter implements ToolInterface
 			return $this->definition['inputSchema'];
 		}
 
-		return array('type' => 'object', 'properties' => array());
+		return ['type' => 'object', 'properties' => []];
 	}
 
 	public function execute(array $arguments)
@@ -57,7 +57,7 @@ class McpToolAdapter implements ToolInterface
 
 		// Resultado MCP: {content: [{type: 'text', text: '...'}], isError: bool}
 		if (isset($result['content']) && is_array($result['content'])) {
-			$texts = array();
+			$texts = [];
 			foreach ($result['content'] as $part) {
 				if (isset($part['text'])) {
 					$texts[] = $part['text'];

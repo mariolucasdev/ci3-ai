@@ -23,12 +23,12 @@ class OpenAiProvider extends AbstractProvider
 		return 'openai';
 	}
 
-	public function chat(array $messages, array $options = array())
+	public function chat(array $messages, array $options = [])
 	{
-		$payload = array(
+		$payload = [
 			'model' => $this->resolveModel($options),
 			'messages' => $this->mapMessages($messages),
-		);
+		];
 
 		if (isset($options['temperature'])) {
 			$payload['temperature'] = $options['temperature'];
@@ -43,7 +43,7 @@ class OpenAiProvider extends AbstractProvider
 		$response = $this->http->postJson(
 			rtrim($this->config['base_url'], '/') . '/chat/completions',
 			$payload,
-			array('Authorization: Bearer ' . $this->config['api_key'])
+			['Authorization: Bearer ' . $this->config['api_key']]
 		);
 
 		return $this->parseResponse($response);
@@ -55,26 +55,26 @@ class OpenAiProvider extends AbstractProvider
 	 */
 	protected function mapMessages(array $messages)
 	{
-		$mapped = array();
+		$mapped = [];
 
 		foreach ($messages as $message) {
-			$item = array('role' => $message->role);
+			$item = ['role' => $message->role];
 
 			if ($message->role === Message::ROLE_TOOL) {
 				$item['tool_call_id'] = $message->toolCallId;
 				$item['content'] = (string) $message->content;
 			} elseif ($message->role === Message::ROLE_ASSISTANT && count($message->toolCalls) > 0) {
 				$item['content'] = $message->content;
-				$item['tool_calls'] = array();
+				$item['tool_calls'] = [];
 				foreach ($message->toolCalls as $call) {
-					$item['tool_calls'][] = array(
+					$item['tool_calls'][] = [
 						'id' => $call->id,
 						'type' => 'function',
-						'function' => array(
+						'function' => [
 							'name' => $call->name,
 							'arguments' => json_encode($call->arguments),
-						),
-					);
+						],
+					];
 				}
 			} else {
 				$item['content'] = (string) $message->content;
@@ -94,17 +94,17 @@ class OpenAiProvider extends AbstractProvider
 	 */
 	protected function mapTools(array $tools)
 	{
-		$mapped = array();
+		$mapped = [];
 
 		foreach ($tools as $tool) {
-			$mapped[] = array(
+			$mapped[] = [
 				'type' => 'function',
-				'function' => array(
+				'function' => [
 					'name' => $tool['name'],
 					'description' => $tool['description'],
 					'parameters' => $tool['parameters'],
-				),
-			);
+				],
+			];
 		}
 
 		return $mapped;
@@ -119,8 +119,8 @@ class OpenAiProvider extends AbstractProvider
 		$result = new ChatResponse();
 		$result->raw = $response;
 
-		$choice = isset($response['choices'][0]) ? $response['choices'][0] : array();
-		$message = isset($choice['message']) ? $choice['message'] : array();
+		$choice = isset($response['choices'][0]) ? $response['choices'][0] : [];
+		$message = isset($choice['message']) ? $choice['message'] : [];
 
 		$result->content = isset($message['content']) ? $message['content'] : null;
 		$result->finishReason = isset($choice['finish_reason']) ? $choice['finish_reason'] : null;
@@ -130,7 +130,7 @@ class OpenAiProvider extends AbstractProvider
 				$arguments = json_decode($call['function']['arguments'], true);
 				$result->toolCalls[] = new ToolCall(
 					$call['function']['name'],
-					is_array($arguments) ? $arguments : array(),
+					is_array($arguments) ? $arguments : [],
 					isset($call['id']) ? $call['id'] : null
 				);
 			}

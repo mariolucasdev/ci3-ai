@@ -18,7 +18,7 @@ use CiAi\Support\Http;
  *   $mcp = new McpClient('https://servidor/mcp');
  *   $mcp->initialize();
  *   $tools = $mcp->listTools();
- *   $result = $mcp->callTool('nome_da_tool', array('arg' => 'valor'));
+ *   $result = $mcp->callTool('nome_da_tool', ['arg' => 'valor']);
  *
  * Para usar tools remotas em um agente:
  *   foreach ($mcp->tools() as $tool) { $agent->addTool($tool); }
@@ -30,7 +30,7 @@ class McpClient
 	/** @var string */
 	protected $url;
 
-	/** @var array Headers extras, ex.: array('Authorization: Bearer x') */
+	/** @var array Headers extras, ex.: ['Authorization: Bearer x'] */
 	protected $headers;
 
 	/** @var Http */
@@ -47,7 +47,7 @@ class McpClient
 	 * @param array $headers
 	 * @param int $timeout
 	 */
-	public function __construct($url, array $headers = array(), $timeout = 60)
+	public function __construct($url, array $headers = [], $timeout = 60)
 	{
 		$this->url = $url;
 		$this->headers = $headers;
@@ -61,14 +61,14 @@ class McpClient
 	 */
 	public function initialize()
 	{
-		$result = $this->request('initialize', array(
+		$result = $this->request('initialize', [
 			'protocolVersion' => self::PROTOCOL_VERSION,
 			'capabilities' => new \stdClass(),
-			'clientInfo' => array(
+			'clientInfo' => [
 				'name' => 'ci3-ai',
 				'version' => '0.1.0',
-			),
-		));
+			],
+		]);
 
 		$this->notify('notifications/initialized');
 		$this->initialized = true;
@@ -86,7 +86,7 @@ class McpClient
 		$this->ensureInitialized();
 		$result = $this->request('tools/list');
 
-		return isset($result['tools']) ? $result['tools'] : array();
+		return isset($result['tools']) ? $result['tools'] : [];
 	}
 
 	/**
@@ -96,14 +96,14 @@ class McpClient
 	 * @param array $arguments
 	 * @return array Resultado MCP (content, isError)
 	 */
-	public function callTool($name, array $arguments = array())
+	public function callTool($name, array $arguments = [])
 	{
 		$this->ensureInitialized();
 
-		return $this->request('tools/call', array(
+		return $this->request('tools/call', [
 			'name' => $name,
 			'arguments' => count($arguments) > 0 ? $arguments : new \stdClass(),
-		));
+		]);
 	}
 
 	/**
@@ -113,7 +113,7 @@ class McpClient
 	 */
 	public function tools()
 	{
-		$adapters = array();
+		$adapters = [];
 
 		foreach ($this->listTools() as $definition) {
 			$adapters[] = new McpToolAdapter($this, $definition);
@@ -137,11 +137,11 @@ class McpClient
 	 */
 	protected function request($method, $params = null)
 	{
-		$payload = array(
+		$payload = [
 			'jsonrpc' => '2.0',
 			'id' => ++$this->requestId,
 			'method' => $method,
-		);
+		];
 		if ($params !== null) {
 			$payload['params'] = $params;
 		}
@@ -153,7 +153,7 @@ class McpClient
 			throw new AiException('MCP [' . $method . ']: ' . $message);
 		}
 
-		return isset($response['result']) ? $response['result'] : array();
+		return isset($response['result']) ? $response['result'] : [];
 	}
 
 	/**
@@ -164,10 +164,10 @@ class McpClient
 	protected function notify($method)
 	{
 		try {
-			$this->http->postJson($this->url, array(
+			$this->http->postJson($this->url, [
 				'jsonrpc' => '2.0',
 				'method' => $method,
-			), $this->headers);
+			], $this->headers);
 		} catch (\Exception $e) {
 			// Alguns servidores respondem 202/vazio a notificações; ignorar falhas de parse.
 		}

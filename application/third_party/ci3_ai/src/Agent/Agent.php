@@ -39,10 +39,10 @@ class Agent
 	protected $maxIterations = 10;
 
 	/** @var array Opções repassadas ao provedor (temperature, model...) */
-	protected $options = array();
+	protected $options = [];
 
 	/** @var Message[] Histórico completo da última execução */
-	protected $messages = array();
+	protected $messages = [];
 
 	/**
 	 * @param ProviderInterface $provider
@@ -122,9 +122,9 @@ class Agent
 	 * @return ChatResponse
 	 * @throws AiException
 	 */
-	public function run($userInput, array $history = array())
+	public function run($userInput, array $history = [])
 	{
-		$this->messages = array();
+		$this->messages = [];
 
 		if ($this->systemPrompt !== null) {
 			$this->messages[] = Message::system($this->systemPrompt);
@@ -154,7 +154,7 @@ class Agent
 				try {
 					$result = $this->tools->execute($call->name, $call->arguments);
 				} catch (\Exception $e) {
-					$result = array('error' => $e->getMessage());
+					$result = ['error' => $e->getMessage()];
 				}
 
 				$content = is_string($result) ? $result : json_encode($result);

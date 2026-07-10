@@ -26,7 +26,7 @@ class Message
 	public $content;
 
 	/** @var ToolCall[] Chamadas de tool feitas pelo assistente */
-	public $toolCalls = array();
+	public $toolCalls = [];
 
 	/** @var string|null ID da chamada respondida (mensagens role=tool) */
 	public $toolCallId;
@@ -67,7 +67,7 @@ class Message
 	 * @param ToolCall[] $toolCalls
 	 * @return Message
 	 */
-	public static function assistant($content, array $toolCalls = array())
+	public static function assistant($content, array $toolCalls = [])
 	{
 		$message = new self(self::ROLE_ASSISTANT, $content);
 		$message->toolCalls = $toolCalls;

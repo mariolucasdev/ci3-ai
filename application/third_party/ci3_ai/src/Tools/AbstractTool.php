@@ -22,10 +22,10 @@ abstract class AbstractTool implements ToolInterface
 	protected $description = '';
 
 	/** @var array JSON Schema dos parâmetros */
-	protected $parameters = array(
+	protected $parameters = [
 		'type' => 'object',
-		'properties' => array(),
-	);
+		'properties' => [],
+	];
 
 	public function getName()
 	{

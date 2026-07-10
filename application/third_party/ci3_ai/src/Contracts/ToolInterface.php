@@ -26,7 +26,7 @@ interface ToolInterface
 
 	/**
 	 * JSON Schema dos parâmetros aceitos, como array associativo.
-	 * Ex.: array('type' => 'object', 'properties' => array(...), 'required' => array(...))
+	 * Ex.: ['type' => 'object', 'properties' => [...], 'required' => [...]]
 	 *
 	 * @return array
 	 */

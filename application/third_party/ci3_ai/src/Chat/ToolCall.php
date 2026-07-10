@@ -20,14 +20,14 @@ class ToolCall
 	public $name;
 
 	/** @var array Argumentos já decodificados */
-	public $arguments = array();
+	public $arguments = [];
 
 	/**
 	 * @param string $name
 	 * @param array $arguments
 	 * @param string|null $id
 	 */
-	public function __construct($name, array $arguments = array(), $id = null)
+	public function __construct($name, array $arguments = [], $id = null)
 	{
 		$this->name = $name;
 		$this->arguments = $arguments;

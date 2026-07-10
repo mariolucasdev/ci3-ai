@@ -21,7 +21,7 @@ export DEEPSEEK_API_KEY=...
 $this->load->library('ai');
 
 echo $this->ai->ask('Resuma este texto: ...');                          // provedor padrão
-echo $this->ai->ask('Olá!', array('temperature' => 0.2), 'gemini');     // provedor específico
+echo $this->ai->ask('Olá!', ['temperature' => 0.2], 'gemini');     // provedor específico
 ```
 
 ### Conversa com controle de mensagens
@@ -29,10 +29,10 @@ echo $this->ai->ask('Olá!', array('temperature' => 0.2), 'gemini');     // prov
 ```php
 use CiAi\Chat\Message;
 
-$response = $this->ai->chat(array(
+$response = $this->ai->chat([
     Message::system('Você é um assistente de suporte.'),
     Message::user('Como redefinir minha senha?'),
-), array('model' => 'gpt-4o'), 'openai');
+], ['model' => 'gpt-4o'], 'openai');
 
 echo $response->content;
 print_r($response->usage);
@@ -60,18 +60,18 @@ class BuscarPedidoTool extends AbstractTool
 {
     protected $name = 'buscar_pedido';
     protected $description = 'Busca um pedido pelo número.';
-    protected $parameters = array(
+    protected $parameters = [
         'type' => 'object',
-        'properties' => array(
-            'numero' => array('type' => 'string', 'description' => 'Número do pedido'),
-        ),
-        'required' => array('numero'),
-    );
+        'properties' => [
+            'numero' => ['type' => 'string', 'description' => 'Número do pedido'],
+        ],
+        'required' => ['numero'],
+    ];
 
     public function execute(array $arguments)
     {
         // consulte seu model aqui
-        return array('numero' => $arguments['numero'], 'status' => 'enviado');
+        return ['numero' => $arguments['numero'], 'status' => 'enviado'];
     }
 }
 ```
@@ -79,7 +79,7 @@ class BuscarPedidoTool extends AbstractTool
 ### MCP — consumir um servidor remoto
 
 ```php
-$mcp = $this->ai->mcpClient('https://exemplo.com/mcp', array('Authorization: Bearer token'));
+$mcp = $this->ai->mcpClient('https://exemplo.com/mcp', ['Authorization: Bearer token']);
 
 // Tools remotas direto num agente:
 $agent = $this->ai->agent();
@@ -110,7 +110,7 @@ public function mcp()
 | DeepSeek | `deepseek-chat` | `DEEPSEEK_API_KEY` |
 | Gemini   | `gemini-2.0-flash` | `GEMINI_API_KEY` |
 
-Modelos e URLs são configuráveis em `application/config/ai.php`; o modelo também pode ser trocado por chamada via `array('model' => '...')`.
+Modelos e URLs são configuráveis em `application/config/ai.php`; o modelo também pode ser trocado por chamada via `['model' => '...']`.
 
 ## Demo
 
