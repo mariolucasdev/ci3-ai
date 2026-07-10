@@ -10,33 +10,33 @@ namespace CiAi\Contracts;
 
 interface ToolInterface
 {
-	/**
-	 * Nome único da tool (ex.: "get_weather").
-	 *
-	 * @return string
-	 */
-	public function getName();
+    /**
+     * Nome único da tool (ex.: "get_weather").
+     *
+     * @return string
+     */
+    public function getName();
 
-	/**
-	 * Descrição usada pelo modelo para decidir quando chamar a tool.
-	 *
-	 * @return string
-	 */
-	public function getDescription();
+    /**
+     * Descrição usada pelo modelo para decidir quando chamar a tool.
+     *
+     * @return string
+     */
+    public function getDescription();
 
-	/**
-	 * JSON Schema dos parâmetros aceitos, como array associativo.
-	 * Ex.: ['type' => 'object', 'properties' => [...], 'required' => [...]]
-	 *
-	 * @return array
-	 */
-	public function getParameters();
+    /**
+     * JSON Schema dos parâmetros aceitos, como array associativo.
+     * Ex.: ['type' => 'object', 'properties' => [...], 'required' => [...]]
+     *
+     * @return array
+     */
+    public function getParameters();
 
-	/**
-	 * Executa a tool com os argumentos fornecidos pelo modelo.
-	 *
-	 * @param array $arguments
-	 * @return mixed  String ou estrutura serializável em JSON
-	 */
-	public function execute(array $arguments);
+    /**
+     * Executa a tool com os argumentos fornecidos pelo modelo.
+     *
+     * @param array $arguments
+     * @return mixed  String ou estrutura serializável em JSON
+     */
+    public function execute(array $arguments);
 }

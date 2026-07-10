@@ -13,31 +13,31 @@ namespace CiAi\Chat;
  */
 class ChatResponse
 {
-	/** @var string|null Texto gerado pelo modelo */
-	public $content;
+    /** @var string|null Texto gerado pelo modelo */
+    public $content;
 
-	/** @var ToolCall[] */
-	public $toolCalls = [];
+    /** @var ToolCall[] */
+    public $toolCalls = [];
 
-	/** @var string|null stop, tool_calls, length... */
-	public $finishReason;
+    /** @var string|null stop, tool_calls, length... */
+    public $finishReason;
 
-	/** @var array Uso de tokens: prompt_tokens, completion_tokens, total_tokens */
-	public $usage = [];
+    /** @var array Uso de tokens: prompt_tokens, completion_tokens, total_tokens */
+    public $usage = [];
 
-	/** @var array Resposta bruta do provedor (para depuração) */
-	public $raw = [];
+    /** @var array Resposta bruta do provedor (para depuração) */
+    public $raw = [];
 
-	/**
-	 * @return bool
-	 */
-	public function hasToolCalls()
-	{
-		return count($this->toolCalls) > 0;
-	}
+    /**
+     * @return bool
+     */
+    public function hasToolCalls()
+    {
+        return count($this->toolCalls) > 0;
+    }
 
-	public function __toString()
-	{
-		return (string) $this->content;
-	}
+    public function __toString()
+    {
+        return (string) $this->content;
+    }
 }

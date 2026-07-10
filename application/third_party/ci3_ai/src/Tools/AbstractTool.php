@@ -15,30 +15,30 @@ use CiAi\Contracts\ToolInterface;
  */
 abstract class AbstractTool implements ToolInterface
 {
-	/** @var string */
-	protected $name = '';
+    /** @var string */
+    protected $name = '';
 
-	/** @var string */
-	protected $description = '';
+    /** @var string */
+    protected $description = '';
 
-	/** @var array JSON Schema dos parâmetros */
-	protected $parameters = [
-		'type' => 'object',
-		'properties' => [],
-	];
+    /** @var array JSON Schema dos parâmetros */
+    protected $parameters = [
+        'type' => 'object',
+        'properties' => [],
+    ];
 
-	public function getName()
-	{
-		return $this->name;
-	}
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	public function getDescription()
-	{
-		return $this->description;
-	}
+    public function getDescription()
+    {
+        return $this->description;
+    }
 
-	public function getParameters()
-	{
-		return $this->parameters;
-	}
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
 }

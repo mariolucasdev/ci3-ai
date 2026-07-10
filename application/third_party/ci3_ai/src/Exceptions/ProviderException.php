@@ -10,21 +10,21 @@ namespace CiAi\Exceptions;
 
 class ProviderException extends AiException
 {
-	/** @var int Código HTTP retornado pelo provedor (0 = erro de rede) */
-	public $statusCode = 0;
+    /** @var int Código HTTP retornado pelo provedor (0 = erro de rede) */
+    public $statusCode = 0;
 
-	/** @var mixed Corpo bruto da resposta do provedor */
-	public $responseBody;
+    /** @var mixed Corpo bruto da resposta do provedor */
+    public $responseBody;
 
-	/**
-	 * @param string $message
-	 * @param int $statusCode
-	 * @param mixed $responseBody
-	 */
-	public function __construct($message, $statusCode = 0, $responseBody = null)
-	{
-		parent::__construct($message, $statusCode);
-		$this->statusCode = $statusCode;
-		$this->responseBody = $responseBody;
-	}
+    /**
+     * @param string $message
+     * @param int $statusCode
+     * @param mixed $responseBody
+     */
+    public function __construct($message, $statusCode = 0, $responseBody = null)
+    {
+        parent::__construct($message, $statusCode);
+        $this->statusCode = $statusCode;
+        $this->responseBody = $responseBody;
+    }
 }

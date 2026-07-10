@@ -12,21 +12,21 @@ use CiAi\Chat\ChatResponse;
 
 interface ProviderInterface
 {
-	/**
-	 * Nome do provedor (openai, gemini, deepseek...).
-	 *
-	 * @return string
-	 */
-	public function name();
+    /**
+     * Nome do provedor (openai, gemini, deepseek...).
+     *
+     * @return string
+     */
+    public function name();
 
-	/**
-	 * Envia uma conversa ao provedor e retorna a resposta.
-	 *
-	 * @param \CiAi\Chat\Message[] $messages
-	 * @param array $options  Opções: model, temperature, max_tokens,
-	 *                        tools (array de schemas neutros — ver ToolRegistry::schemas())
-	 * @return ChatResponse
-	 * @throws \CiAi\Exceptions\ProviderException
-	 */
-	public function chat(array $messages, array $options = []);
+    /**
+     * Envia uma conversa ao provedor e retorna a resposta.
+     *
+     * @param \CiAi\Chat\Message[] $messages
+     * @param array $options  Opções: model, temperature, max_tokens,
+     *                        tools (array de schemas neutros — ver ToolRegistry::schemas())
+     * @return ChatResponse
+     * @throws \CiAi\Exceptions\ProviderException
+     */
+    public function chat(array $messages, array $options = []);
 }

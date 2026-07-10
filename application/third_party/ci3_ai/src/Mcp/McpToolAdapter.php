@@ -16,58 +16,58 @@ use CiAi\Contracts\ToolInterface;
  */
 class McpToolAdapter implements ToolInterface
 {
-	/** @var McpClient */
-	protected $client;
+    /** @var McpClient */
+    protected $client;
 
-	/** @var array Definição vinda de tools/list: name, description, inputSchema */
-	protected $definition;
+    /** @var array Definição vinda de tools/list: name, description, inputSchema */
+    protected $definition;
 
-	/**
-	 * @param McpClient $client
-	 * @param array $definition
-	 */
-	public function __construct(McpClient $client, array $definition)
-	{
-		$this->client = $client;
-		$this->definition = $definition;
-	}
+    /**
+     * @param McpClient $client
+     * @param array $definition
+     */
+    public function __construct(McpClient $client, array $definition)
+    {
+        $this->client = $client;
+        $this->definition = $definition;
+    }
 
-	public function getName()
-	{
-		return $this->definition['name'];
-	}
+    public function getName()
+    {
+        return $this->definition['name'];
+    }
 
-	public function getDescription()
-	{
-		return isset($this->definition['description']) ? $this->definition['description'] : '';
-	}
+    public function getDescription()
+    {
+        return isset($this->definition['description']) ? $this->definition['description'] : '';
+    }
 
-	public function getParameters()
-	{
-		if (isset($this->definition['inputSchema'])) {
-			return $this->definition['inputSchema'];
-		}
+    public function getParameters()
+    {
+        if (isset($this->definition['inputSchema'])) {
+            return $this->definition['inputSchema'];
+        }
 
-		return ['type' => 'object', 'properties' => []];
-	}
+        return ['type' => 'object', 'properties' => []];
+    }
 
-	public function execute(array $arguments)
-	{
-		$result = $this->client->callTool($this->getName(), $arguments);
+    public function execute(array $arguments)
+    {
+        $result = $this->client->callTool($this->getName(), $arguments);
 
-		// Resultado MCP: {content: [{type: 'text', text: '...'}], isError: bool}
-		if (isset($result['content']) && is_array($result['content'])) {
-			$texts = [];
-			foreach ($result['content'] as $part) {
-				if (isset($part['text'])) {
-					$texts[] = $part['text'];
-				}
-			}
-			if (count($texts) > 0) {
-				return implode("\n", $texts);
-			}
-		}
+        // Resultado MCP: {content: [{type: 'text', text: '...'}], isError: bool}
+        if (isset($result['content']) && is_array($result['content'])) {
+            $texts = [];
+            foreach ($result['content'] as $part) {
+                if (isset($part['text'])) {
+                    $texts[] = $part['text'];
+                }
+            }
+            if (count($texts) > 0) {
+                return implode("\n", $texts);
+            }
+        }
 
-		return $result;
-	}
+        return $result;
+    }
 }

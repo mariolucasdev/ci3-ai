@@ -13,24 +13,24 @@ namespace CiAi\Chat;
  */
 class ToolCall
 {
-	/** @var string|null ID da chamada (OpenAI/DeepSeek; Gemini não usa) */
-	public $id;
+    /** @var string|null ID da chamada (OpenAI/DeepSeek; Gemini não usa) */
+    public $id;
 
-	/** @var string */
-	public $name;
+    /** @var string */
+    public $name;
 
-	/** @var array Argumentos já decodificados */
-	public $arguments = [];
+    /** @var array Argumentos já decodificados */
+    public $arguments = [];
 
-	/**
-	 * @param string $name
-	 * @param array $arguments
-	 * @param string|null $id
-	 */
-	public function __construct($name, array $arguments = [], $id = null)
-	{
-		$this->name = $name;
-		$this->arguments = $arguments;
-		$this->id = $id;
-	}
+    /**
+     * @param string $name
+     * @param array $arguments
+     * @param string|null $id
+     */
+    public function __construct($name, array $arguments = [], $id = null)
+    {
+        $this->name = $name;
+        $this->arguments = $arguments;
+        $this->id = $id;
+    }
 }

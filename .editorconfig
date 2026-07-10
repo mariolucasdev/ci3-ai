@@ -13,3 +13,8 @@ charset = utf-8
 
 # Tab indentation (no size specified)
 indent_style = tab
+
+# Pacote CI3 AI: 4 espaços, nunca tabs
+[{application/third_party/ci3_ai/**,application/libraries/Ai.php,application/controllers/Ai_demo.php,application/config/ai.php,.php-cs-fixer.php}]
+indent_style = space
+indent_size = 4

@@ -14,8 +14,8 @@ namespace CiAi\Providers;
  */
 class DeepSeekProvider extends OpenAiProvider
 {
-	public function name()
-	{
-		return 'deepseek';
-	}
+    public function name()
+    {
+        return 'deepseek';
+    }
 }

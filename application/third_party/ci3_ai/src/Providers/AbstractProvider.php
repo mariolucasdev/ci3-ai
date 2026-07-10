@@ -14,41 +14,41 @@ use CiAi\Support\Http;
 
 abstract class AbstractProvider implements ProviderInterface
 {
-	/** @var array Configuração: api_key, base_url, model, timeout */
-	protected $config;
+    /** @var array Configuração: api_key, base_url, model, timeout */
+    protected $config;
 
-	/** @var Http */
-	protected $http;
+    /** @var Http */
+    protected $http;
 
-	/**
-	 * @param array $config
-	 */
-	public function __construct(array $config)
-	{
-		if (empty($config['api_key'])) {
-			throw new ProviderException(
-				'API key ausente para o provedor "' . $this->name() . '". '
-				. 'Defina a variável de ambiente correspondente (ver config/ai.php).'
-			);
-		}
+    /**
+     * @param array $config
+     */
+    public function __construct(array $config)
+    {
+        if (empty($config['api_key'])) {
+            throw new ProviderException(
+                'API key ausente para o provedor "' . $this->name() . '". '
+                . 'Defina a variável de ambiente correspondente (ver config/ai.php).'
+            );
+        }
 
-		$this->config = $config;
-		$timeout = isset($config['timeout']) ? (int) $config['timeout'] : 60;
-		$this->http = new Http($timeout);
-	}
+        $this->config = $config;
+        $timeout = isset($config['timeout']) ? (int) $config['timeout'] : 60;
+        $this->http = new Http($timeout);
+    }
 
-	/**
-	 * Modelo efetivo: opção da chamada > configuração.
-	 *
-	 * @param array $options
-	 * @return string
-	 */
-	protected function resolveModel(array $options)
-	{
-		if (!empty($options['model'])) {
-			return $options['model'];
-		}
+    /**
+     * Modelo efetivo: opção da chamada > configuração.
+     *
+     * @param array $options
+     * @return string
+     */
+    protected function resolveModel(array $options)
+    {
+        if (!empty($options['model'])) {
+            return $options['model'];
+        }
 
-		return $this->config['model'];
-	}
+        return $this->config['model'];
+    }
 }
