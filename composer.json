@@ -1,0 +1,21 @@
+{
+    "name": "mariolucasdev/ci3-ai",
+    "description": "Pacote de IA para CodeIgniter 3.x: agentes, tools e MCP com OpenAI, Gemini e DeepSeek (PHP 7.2+)",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mário Lucas",
+            "email": "mariolucasdev@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.2"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.95"
+    },
+    "scripts": {
+        "cs-check": "php-cs-fixer fix --dry-run --diff",
+        "cs-fix": "php-cs-fixer fix"
+    }
+}

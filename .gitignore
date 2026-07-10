@@ -33,3 +33,4 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 
 .claude
 CLAUDE.md
+.php-cs-fixer.cache
